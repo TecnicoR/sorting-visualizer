@@ -16,7 +16,10 @@ const DataControls: React.FC<DataControlsProps> = ({
 }) => {
   return (
     <div className="flex items-center space-x-2">
-      <label htmlFor="dataType" className="text-sm font-medium text-gray-700">
+      <label
+        htmlFor="dataType"
+        className="min-w-fit text-sm font-medium text-gray-700"
+      >
         Data Type:
       </label>
       <select

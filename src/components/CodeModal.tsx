@@ -1,3 +1,5 @@
+// src/components/CodeModal.tsx
+
 import React, { useState } from "react";
 import Prism from "prismjs";
 import "prismjs/themes/prism-tomorrow.css";
@@ -5,6 +7,9 @@ import "prismjs/themes/prism-tomorrow.css";
 // Import Prism languages
 import "prismjs/components/prism-javascript";
 import "prismjs/components/prism-c";
+
+// Import icons from react-icons
+import { FaCheck, FaCopy, FaTimes } from "react-icons/fa";
 
 interface CodeModalProps {
   algorithm: string;
@@ -89,6 +94,7 @@ void merge(int arr[], int l, int m, int r) {
 
 const CodeModal: React.FC<CodeModalProps> = ({ algorithm, onClose }) => {
   const [language, setLanguage] = useState<string>("javascript");
+  const [copied, setCopied] = useState<boolean>(false);
 
   // Get the code snippet based on the selected algorithm and language
   const code = codeSnippets[algorithm][language];
@@ -100,34 +106,70 @@ const CodeModal: React.FC<CodeModalProps> = ({ algorithm, onClose }) => {
     language,
   );
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(code).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
+    });
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="relative w-11/12 max-w-2xl rounded-md bg-white p-6 shadow-lg">
-        <button
-          onClick={onClose}
-          className="absolute right-2 top-2 text-2xl text-gray-500 hover:text-gray-700"
-        >
-          &times;
-        </button>
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-xl font-bold">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+      <div className="relative w-full max-w-3xl rounded-lg bg-white shadow-lg">
+        {/* Modal Header */}
+        <div className="flex items-center justify-between border-b px-6 py-4">
+          <h2 className="text-xl font-semibold">
             {algorithm === "quickSort" ? "Quick Sort" : "Merge Sort"} Code
           </h2>
-          <select
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
-            className="rounded-md border border-gray-300 px-2 py-1"
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700 focus:outline-none"
+            aria-label="Close Modal"
           >
-            <option value="javascript">JavaScript</option>
-            <option value="c">C</option>
-          </select>
+            <FaTimes className="h-5 w-5" />
+          </button>
         </div>
-        <pre className="language-javascript max-h-96 overflow-auto rounded-md">
-          <code
-            dangerouslySetInnerHTML={{ __html: highlightedCode }}
-            className={`language-${language}`}
-          ></code>
-        </pre>
+
+        {/* Modal Content */}
+        <div className="px-6 py-4">
+          {/* Language Selector and Copy Button */}
+          <div className="mb-4 flex items-center justify-between">
+            <select
+              value={language}
+              onChange={(e) => setLanguage(e.target.value)}
+              className="rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            >
+              <option value="javascript">JavaScript</option>
+              <option value="c">C</option>
+            </select>
+            <button
+              onClick={handleCopy}
+              className="flex items-center space-x-1 text-gray-600 hover:text-gray-800 focus:outline-none"
+            >
+              {copied ? (
+                <>
+                  <FaCheck className="h-5 w-5 text-green-500" />
+                  <span>Copied!</span>
+                </>
+              ) : (
+                <>
+                  <FaCopy className="h-5 w-5" />
+                  <span>Copy Code</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Code Display */}
+          <div className="max-h-96 overflow-auto rounded-md border">
+            <pre className="language-javascript text-sm leading-relaxed">
+              <code
+                dangerouslySetInnerHTML={{ __html: highlightedCode }}
+                className={`language-${language}`}
+              ></code>
+            </pre>
+          </div>
+        </div>
       </div>
     </div>
   );
