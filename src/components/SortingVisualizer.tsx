@@ -20,6 +20,20 @@ import { bucketSortAnimations } from "../algorithms/bucketSort";
 import { combSortAnimations } from "../algorithms/combSort";
 import { timSortAnimations } from "../algorithms/timSort";
 
+type AlgorithmName =
+  | "quickSort"
+  | "mergeSort"
+  | "bubbleSort"
+  | "insertionSort"
+  | "selectionSort"
+  | "heapSort"
+  | "shellSort"
+  | "countingSort"
+  | "radixSort"
+  | "bucketSort"
+  | "combSort"
+  | "timSort";
+
 interface BarState {
   id: number;
   value: number;
@@ -74,10 +88,6 @@ const SortingVisualizer: React.FC = () => {
     }));
 
     setArray(initialArray);
-  };
-
-  const swapElements = (arr: number[], indexA: number, indexB: number) => {
-    [arr[indexA], arr[indexB]] = [arr[indexB], arr[indexA]];
   };
 
   const randomIntFromInterval = (min: number, max: number) => {
@@ -274,7 +284,7 @@ const SortingVisualizer: React.FC = () => {
       </div>
 
       {/* Algorithm Information */}
-      <AlgorithmInfo algorithm={selectedAlgorithm} />
+      <AlgorithmInfo algorithm={selectedAlgorithm as AlgorithmName} />
 
       {/* Code Modal */}
       {showCodeModal && (

@@ -14,12 +14,36 @@ import "prismjs/components/prism-python";
 // Import icons from react-icons
 import { FaCheck, FaCopy, FaTimes } from "react-icons/fa";
 
+// Define the type for algorithm names
+type AlgorithmName =
+  | "quickSort"
+  | "mergeSort"
+  | "bubbleSort"
+  | "insertionSort"
+  | "selectionSort"
+  | "heapSort"
+  | "shellSort"
+  | "countingSort"
+  | "radixSort"
+  | "bucketSort"
+  | "combSort"
+  | "timSort";
+
+// Define the type for language names
+type LanguageName = "javascript" | "python" | "java" | "cpp" | "c";
+
 interface CodeModalProps {
-  algorithm: string;
+  algorithm: AlgorithmName;
   onClose: () => void;
 }
 
-const codeSnippets = {
+type CodeSnippets = {
+  [key in AlgorithmName]: {
+    [lang in LanguageName]?: string;
+  };
+};
+
+const codeSnippets: CodeSnippets = {
   quickSort: {
     javascript: `function quickSort(array) {
   if (array.length <= 1) {
@@ -994,7 +1018,7 @@ def tim_sort(arr):
 };
 
 const CodeModal: React.FC<CodeModalProps> = ({ algorithm, onClose }) => {
-  const [language, setLanguage] = useState<string>("javascript");
+  const [language, setLanguage] = useState<LanguageName>("javascript");
   const [copied, setCopied] = useState<boolean>(false);
 
   // Get the code snippet based on the selected algorithm and language
@@ -1043,7 +1067,7 @@ const CodeModal: React.FC<CodeModalProps> = ({ algorithm, onClose }) => {
           <div className="mb-4 flex items-center justify-between">
             <select
               value={language}
-              onChange={(e) => setLanguage(e.target.value)}
+              onChange={(e) => setLanguage(e.target.value as LanguageName)}
               className="rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
             >
               <option value="javascript">JavaScript</option>

@@ -3,11 +3,25 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+type AlgorithmName =
+  | "quickSort"
+  | "mergeSort"
+  | "bubbleSort"
+  | "insertionSort"
+  | "selectionSort"
+  | "heapSort"
+  | "shellSort"
+  | "countingSort"
+  | "radixSort"
+  | "bucketSort"
+  | "combSort"
+  | "timSort";
+
 interface AlgorithmInfoProps {
-  algorithm: string;
+  algorithm: AlgorithmName;
 }
 
-const AlgorithmInfo: React.FC<AlgorithmInfoProps> = ({ algorithm: string }) => {
+const AlgorithmInfo: React.FC<AlgorithmInfoProps> = ({ algorithm }) => {
   const info = {
     quickSort: {
       name: "Quick Sort",
