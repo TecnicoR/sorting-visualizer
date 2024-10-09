@@ -289,7 +289,7 @@ const SortingVisualizer: React.FC = () => {
       {/* Code Modal */}
       {showCodeModal && (
         <CodeModal
-          algorithm={selectedAlgorithm}
+          algorithm={selectedAlgorithm as AlgorithmName}
           onClose={() => setShowCodeModal(false)}
         />
       )}
