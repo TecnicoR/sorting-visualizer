@@ -1,16 +1,23 @@
 // src/components/controls/AlgorithmSelector.tsx
 
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
-// Remove Heroicons imports
-// import { SelectorIcon, CheckIcon } from '@heroicons/react/solid';
-// Import icons from react-icons
 import { AiFillCaretDown } from "react-icons/ai";
 import { FaCheck } from "react-icons/fa";
 
 const algorithms = [
   { name: "Quick Sort", value: "quickSort" },
   { name: "Merge Sort", value: "mergeSort" },
+  { name: "Bubble Sort", value: "bubbleSort" },
+  { name: "Insertion Sort", value: "insertionSort" },
+  { name: "Selection Sort", value: "selectionSort" },
+  { name: "Heap Sort", value: "heapSort" },
+  { name: "Shell Sort", value: "shellSort" },
+  { name: "Counting Sort", value: "countingSort" },
+  { name: "Radix Sort", value: "radixSort" },
+  { name: "Bucket Sort", value: "bucketSort" },
+  { name: "Comb Sort", value: "combSort" },
+  { name: "Tim Sort", value: "timSort" },
 ];
 
 interface AlgorithmSelectorProps {
@@ -31,7 +38,6 @@ const AlgorithmSelector: React.FC<AlgorithmSelectorProps> = ({
           <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
             <span className="block truncate">{selected?.name}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-              {/* Replace SelectorIcon with AiFillCaretDown */}
               <AiFillCaretDown
                 className="h-5 w-5 text-gray-400"
                 aria-hidden="true"
@@ -70,7 +76,6 @@ const AlgorithmSelector: React.FC<AlgorithmSelectorProps> = ({
                             active ? "text-white" : "text-indigo-600"
                           }`}
                         >
-                          {/* Replace CheckIcon with FaCheck */}
                           <FaCheck className="h-5 w-5" aria-hidden="true" />
                         </span>
                       ) : null}

@@ -9,6 +9,16 @@ import CodeModal from "./CodeModal";
 import { quickSortAnimations } from "../algorithms/quickSort";
 import { mergeSortAnimations } from "../algorithms/mergeSort";
 import { motion } from "framer-motion";
+import { bubbleSortAnimations } from "../algorithms/bubbleSort";
+import { insertionSortAnimations } from "../algorithms/insertionSort";
+import { selectionSortAnimations } from "../algorithms/selectionSort";
+import { heapSortAnimations } from "../algorithms/heapSort";
+import { shellSortAnimations } from "../algorithms/shellSort";
+import { countingSortAnimations } from "../algorithms/countingSort";
+import { radixSortAnimations } from "../algorithms/radixSort";
+import { bucketSortAnimations } from "../algorithms/bucketSort";
+import { combSortAnimations } from "../algorithms/combSort";
+import { timSortAnimations } from "../algorithms/timSort";
 
 interface BarState {
   id: number;
@@ -74,10 +84,45 @@ const SortingVisualizer: React.FC = () => {
     const arrayCopy = array.map((bar) => bar.value);
     let animations: any[] = [];
 
-    if (selectedAlgorithm === "quickSort") {
-      animations = quickSortAnimations(arrayCopy);
-    } else if (selectedAlgorithm === "mergeSort") {
-      animations = mergeSortAnimations(arrayCopy);
+    switch (selectedAlgorithm) {
+      case "quickSort":
+        animations = quickSortAnimations(arrayCopy);
+        break;
+      case "mergeSort":
+        animations = mergeSortAnimations(arrayCopy);
+        break;
+      case "bubbleSort":
+        animations = bubbleSortAnimations(arrayCopy);
+        break;
+      case "insertionSort":
+        animations = insertionSortAnimations(arrayCopy);
+        break;
+      case "selectionSort":
+        animations = selectionSortAnimations(arrayCopy);
+        break;
+      case "heapSort":
+        animations = heapSortAnimations(arrayCopy);
+        break;
+      case "shellSort":
+        animations = shellSortAnimations(arrayCopy);
+        break;
+      case "countingSort":
+        animations = countingSortAnimations(arrayCopy);
+        break;
+      case "radixSort":
+        animations = radixSortAnimations(arrayCopy);
+        break;
+      case "bucketSort":
+        animations = bucketSortAnimations(arrayCopy);
+        break;
+      case "combSort":
+        animations = combSortAnimations(arrayCopy);
+        break;
+      case "timSort":
+        animations = timSortAnimations(arrayCopy);
+        break;
+      default:
+        animations = [];
     }
 
     // Clear any existing timeouts
