@@ -1,4 +1,4 @@
-import React from "react";
+// src/components/controls/SpeedControls.tsx
 
 interface SpeedControlsProps {
   speed: number;
@@ -15,9 +15,9 @@ const SpeedControls: React.FC<SpeedControlsProps> = ({ speed, setSpeed }) => {
         type="range"
         id="speed"
         min="1"
-        max="1000"
-        value={speed}
-        onChange={(e) => setSpeed(Number(e.target.value))}
+        max="100"
+        value={101 - speed} // Invert the speed value
+        onChange={(e) => setSpeed(101 - Number(e.target.value))}
       />
     </div>
   );

@@ -28,10 +28,10 @@ function partition(
   const pivot = array[high];
   let i = low - 1;
   for (let j = low; j < high; j++) {
-    // Record comparison (optional)
+    animations.push(["compare", j, high]); // Comparing elements
     if (array[j] < pivot) {
       i++;
-      animations.push(["swap", i, j]);
+      animations.push(["swap", i, j]); // Swapping elements
       [array[i], array[j]] = [array[j], array[i]];
     }
   }

@@ -34,23 +34,25 @@ function doMerge(
   let j = middleIdx + 1;
 
   while (i <= middleIdx && j <= endIdx) {
-    // Record comparison (optional)
+    animations.push(["compare", i, j]); // Comparing elements
     if (auxiliaryArray[i] <= auxiliaryArray[j]) {
-      animations.push(["overwrite", k, null, auxiliaryArray[i]]);
+      animations.push(["overwrite", k, auxiliaryArray[i]]); // Overwriting element
       mainArray[k++] = auxiliaryArray[i++];
     } else {
-      animations.push(["overwrite", k, null, auxiliaryArray[j]]);
+      animations.push(["overwrite", k, auxiliaryArray[j]]);
       mainArray[k++] = auxiliaryArray[j++];
     }
   }
 
   while (i <= middleIdx) {
-    animations.push(["overwrite", k, null, auxiliaryArray[i]]);
+    animations.push(["compare", i, i]);
+    animations.push(["overwrite", k, auxiliaryArray[i]]);
     mainArray[k++] = auxiliaryArray[i++];
   }
 
   while (j <= endIdx) {
-    animations.push(["overwrite", k, null, auxiliaryArray[j]]);
+    animations.push(["compare", j, j]);
+    animations.push(["overwrite", k, auxiliaryArray[j]]);
     mainArray[k++] = auxiliaryArray[j++];
   }
 }
