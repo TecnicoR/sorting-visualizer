@@ -10,9 +10,14 @@ import { quickSortAnimations } from "../algorithms/quickSort";
 import { mergeSortAnimations } from "../algorithms/mergeSort";
 import { motion } from "framer-motion";
 
+interface BarState {
+  value: number;
+  color: string;
+}
+
 const SortingVisualizer: React.FC = () => {
-  const [array, setArray] = useState<number[]>([]);
-  const [arraySize, setArraySize] = useState<number>(50);
+  const [array, setArray] = useState<BarState[]>([]);
+  const [arraySize] = useState<number>(50);
   const [selectedAlgorithm, setSelectedAlgorithm] =
     useState<string>("quickSort");
   const [dataType, setDataType] = useState<string>("random");
@@ -23,7 +28,7 @@ const SortingVisualizer: React.FC = () => {
   useEffect(() => {
     generateData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [arraySize, dataType]);
+  }, [dataType]);
 
   const generateData = () => {
     const newArray: number[] = [];
@@ -42,7 +47,12 @@ const SortingVisualizer: React.FC = () => {
       newArray.sort((a, b) => b - a);
     }
 
-    setArray(newArray);
+    const initialArray: BarState[] = newArray.map((value) => ({
+      value,
+      color: "#3498DB", // Default blue color
+    }));
+
+    setArray(initialArray);
   };
 
   const swapElements = (arr: number[], indexA: number, indexB: number) => {
@@ -56,7 +66,7 @@ const SortingVisualizer: React.FC = () => {
   const handleSort = () => {
     if (isSorting) return;
     setIsSorting(true);
-    const arrayCopy = array.slice();
+    const arrayCopy = array.map((bar) => bar.value);
     let animations: any[] = [];
 
     if (selectedAlgorithm === "quickSort") {
@@ -69,29 +79,56 @@ const SortingVisualizer: React.FC = () => {
   };
 
   const animateSorting = (animations: any[]) => {
-    const arrayCopy = array.slice();
-    animations.forEach((animation, index) => {
-      setTimeout(() => {
-        const [type, idx1, idx2, value1, value2] = animation;
-        if (type === "swap") {
-          [arrayCopy[idx1], arrayCopy[idx2]] = [
-            arrayCopy[idx2],
-            arrayCopy[idx1],
-          ];
-        } else if (type === "overwrite") {
-          arrayCopy[idx1] = value1;
-        }
-        setArray([...arrayCopy]);
+    const arrayBars = array.slice();
 
-        if (index === animations.length - 1) {
-          setIsSorting(false);
-        }
-      }, index * speed);
+    animations.forEach((animation, index) => {
+      setTimeout(
+        () => {
+          const [action, idx1, idx2] = animation;
+
+          if (action === "compare") {
+            // Change color to indicate comparison
+            arrayBars[idx1].color = "#E74C3C"; // Red color
+            arrayBars[idx2].color = "#E74C3C";
+          } else if (action === "swap") {
+            // Swap the bars
+            [arrayBars[idx1], arrayBars[idx2]] = [
+              arrayBars[idx2],
+              arrayBars[idx1],
+            ];
+            // Change color to indicate swap
+            arrayBars[idx1].color = "#F1C40F"; // Yellow color
+            arrayBars[idx2].color = "#F1C40F";
+          } else if (action === "overwrite") {
+            arrayBars[idx1].value = idx2;
+            arrayBars[idx1].color = "#F1C40F"; // Yellow color
+          }
+
+          setArray([...arrayBars]);
+
+          // Reset colors after action
+          setTimeout(() => {
+            arrayBars[idx1].color = "#3498DB"; // Default blue color
+            arrayBars[idx2].color = "#3498DB";
+            setArray([...arrayBars]);
+
+            if (index === animations.length - 1) {
+              // Mark the array as sorted
+              arrayBars.forEach((bar) => {
+                bar.color = "#2ECC71"; // Green color
+              });
+              setArray([...arrayBars]);
+              setIsSorting(false);
+            }
+          }, speed);
+        },
+        index * speed * 2,
+      ); // Multiply by 2 to allow for color reset delay
     });
   };
 
   const containerHeight = 400; // in pixels
-  const maxValue = Math.max(...array);
+  const maxValue = Math.max(...array.map((bar) => bar.value));
   const barWidth = Math.max(5, Math.floor(800 / arraySize));
 
   return (
@@ -125,15 +162,16 @@ const SortingVisualizer: React.FC = () => {
       </div>
       <div
         className="relative flex items-end justify-center overflow-hidden rounded-md border bg-white"
-        style={{ height: `${containerHeight}px` }}
+        style={{ height: `${containerHeight}px`, paddingTop: "20px" }} // Added paddingTop
       >
-        {array.map((value, idx) => (
+        {array.map((bar, idx) => (
           <motion.div
             key={idx}
             className="array-bar"
+            title={`${bar.value}`} // Tooltip to show the value
             style={{
-              backgroundColor: "#3498DB",
-              height: `${(value / maxValue) * containerHeight}px`,
+              backgroundColor: bar.color,
+              height: `${(bar.value / maxValue) * (containerHeight - 20)}px`, // Adjusted height
               width: `${barWidth}px`,
               margin: "0 1px",
             }}
