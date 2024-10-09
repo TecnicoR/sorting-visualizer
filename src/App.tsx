@@ -1,7 +1,14 @@
-import "./App.css";
+import React from "react";
+import Navbar from "./components/Navbar";
+import SortingVisualizer from "./components/SortingVisualizer";
 
-function App() {
-  return <>Hey</>;
-}
+const App: React.FC = () => {
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <Navbar />
+      <SortingVisualizer />
+    </div>
+  );
+};
 
 export default App;
