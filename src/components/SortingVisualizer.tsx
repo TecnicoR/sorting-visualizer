@@ -51,13 +51,19 @@ const SortingVisualizer: React.FC = () => {
     }
 
     if (dataType === "nearlySorted") {
+      // Sort the array in ascending order
       newArray.sort((a, b) => a - b);
-      swapElements(
-        newArray,
-        Math.floor(arraySize / 2),
-        Math.floor(arraySize / 2) + 1,
-      );
+
+      // Introduce slight randomness by swapping a small percentage of elements
+      const swapCount = Math.max(Math.floor(arraySize * 0.05), 1); // Swap at least 1 element
+      for (let i = 0; i < swapCount; i++) {
+        const idx1 = Math.floor(Math.random() * arraySize);
+        const idx2 = Math.floor(Math.random() * arraySize);
+        // Swap the elements at idx1 and idx2
+        [newArray[idx1], newArray[idx2]] = [newArray[idx2], newArray[idx1]];
+      }
     } else if (dataType === "reversed") {
+      // Sort the array in descending order
       newArray.sort((a, b) => b - a);
     }
 
