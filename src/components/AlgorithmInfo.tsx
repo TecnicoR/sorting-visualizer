@@ -1,6 +1,5 @@
 // src/components/AlgorithmInfo.tsx
 
-import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -8,7 +7,7 @@ interface AlgorithmInfoProps {
   algorithm: string;
 }
 
-const AlgorithmInfo: React.FC<AlgorithmInfoProps> = ({ algorithm }) => {
+const AlgorithmInfo: React.FC<AlgorithmInfoProps> = ({ algorithm: string }) => {
   const info = {
     quickSort: {
       name: "Quick Sort",
